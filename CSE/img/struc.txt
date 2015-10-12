@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include <stdlib.h>
+struct book
+{
+    char Title[50];
+    char Author[50];
+    int Year;
+    int Price;
+};
+
+void print(struct book myBook[],int i)
+{
+    int j;
+    printf("-------------------------------------------------------------------------------------------------\n");
+    printf("Title\t\t\t\t\t\tAuthor\t\t\tAuthor\t\tPrice\n");
+    printf("-------------------------------------------------------------------------------------------------\n");
+    for(j=0;j<i;j++)
+        printf("%-48s%-20s\t%-10d\t%-d\n",myBook[j].Title,myBook[j].Author,myBook[j].Year,myBook[j].Price);
+    printf("\n-------------------------------------------------------------------------------------------------\n");
+
+}
+void scanToArray(struct book myBook[],int * i)
+{
+    FILE *books;
+    *i = 0;
+    books = fopen("C:\\Temp\\book.txt", "r");
+                if (books == NULL)
+                {
+                    printf("CANNOT OPEN FILE.\n");
+                    exit(1);
+                }
+                while(!feof(books))
+                {
+                    fscanf(books, "%[^\n]%*c", &myBook[*i].Title);
+                    fscanf(books, "%[^\n]%*c", &myBook[*i].Author);
+                    fscanf(books, "%d\n", &myBook[*i].Year);
+                    fscanf(books, "%d\n", &myBook[*i].Price);
+                    (*i)++;
+                }
+        fclose(books);
+}
+int main(void)
+{
+    int i;
+    struct book myBook[100];
+        scanToArray(myBook,&i);
+        print(myBook,i);
+}
