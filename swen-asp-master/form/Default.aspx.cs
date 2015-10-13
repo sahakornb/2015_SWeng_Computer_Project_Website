@@ -81,6 +81,16 @@ public partial class Default2 : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Image1.Visible = false;
+        Image2.Visible = false;
+        Image3.Visible = false;
+        Image4.Visible = false;
+        Image5.Visible = false;
+        Image6.Visible = false;
+        Image7.Visible = false;
+
+
+
         string constr = WebConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(constr);
         if (Session["New"] == null) // ยังบ่ได้ล็อกอิน
@@ -107,7 +117,18 @@ public partial class Default2 : System.Web.UI.Page
                 showRequest(id, conn);
                 showProj(id, conn);
             }
+            string pjid = GetProjID(id, conn);
+            if (pjid != "false")
+            {
+                chkApprove(pjid, conn);
+            }
         }
+
+        // chkApprove
+       
+
+
+
 
     }
     protected void btn_approve_Click(object sender, EventArgs e)
@@ -177,7 +198,7 @@ public partial class Default2 : System.Web.UI.Page
     }
     protected void AcceptCPE03(string ProjID, string PersID, SqlConnection conn)
     {
-        ;
+        
     }
 
     protected string checkStatusIDinProject(string ProjID, string PersID, SqlConnection conn)
@@ -279,5 +300,70 @@ public partial class Default2 : System.Web.UI.Page
         }
         Response.Redirect(Request.Url.AbsoluteUri);
     }
+    
+    public string GetProjID(string id, SqlConnection conn)
+    {
+        string findProjID = "select ProjID from Relation where PersID = '" + id + "'";
+        conn.Open();
+        SqlCommand findProjIDComm = new SqlCommand(findProjID, conn);
+        SqlDataReader myProjID = findProjIDComm.ExecuteReader();
+        if (myProjID.Read())
+        {
+            string ProjID = myProjID.GetInt32(0).ToString();
+            myProjID.Close();
+            conn.Close();
+            return ProjID;
+        }
+        else
+        {
+            myProjID.Close();
+            conn.Close();
+            return "false";
+        }
+        
+        
+    }
+
+
+    public void chkApprove(string ProjID, SqlConnection conn)
+    {
+
+        string Checkuser = "select max(Status_ID) as value from project where ProjID ='" + ProjID + "'";
+        conn.Open();
+        SqlCommand com = new SqlCommand(Checkuser, conn);
+        //int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+        int temp = 0;
+        
+        SqlDataReader reader = com.ExecuteReader();
+
+        if (reader.Read())
+        {
+            temp = Convert.ToInt32( reader["value"].ToString());
+        }
+
+        conn.Close();
+
+
+        if (temp >= 5)
+        {
+            Image1.Visible = true;
+            Image2.Visible = true;
+            Image3.Visible = true;
+        }
+        else if (temp >= 4)
+        {
+            Image1.Visible = true;
+            Image2.Visible = true;
+        }
+        else if (temp >= 2)
+        {
+            Image1.Visible = true;
+        }
+
+        
+    }
+
+
+
 
 }

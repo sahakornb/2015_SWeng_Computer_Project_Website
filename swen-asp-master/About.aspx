@@ -117,6 +117,108 @@
 
             <br />
             <br />
+             <h5 class="text-center">ทีมพัฒนาเว็บไซต์ต่อ</h5>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4">
+                    <asp:Image ID="Image6" runat="server" Height="200px" ImageUrl="img/kwanchanok.jpg" Width="200px" class="img-circle" />
+                </div>
+                <div class="col-lg-4" style="text-align: left">
+                    <div class="text-left">
+                        <br />
+                        <br />
+                    </div>
+                    <p class="text-left"><span><strong><span style="font-size: 16px">55361076</span></strong></span><span style="font-size: 16px"></p>
+                    <p class="text-left"><span><strong>นางสาวขวัญชนก นวลนภาศรี</strong></span></p>
+                    <p class="text-left"><span><strong>Kwanchanok Nonnapasri</strong></span></p>
+                    <p class="text-left"><span><strong><span style="font-size: 16px">kwanchanokn55@email.nu.ac.th</span></strong></span></p>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+              <br />
+            <br />
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4">
+                    <asp:Image ID="Image8" runat="server" Height="200px" ImageUrl="~/img/thee.jpg" Width="200px" class="img-circle" />
+                </div>
+                <div class="col-lg-4" style="text-align: left">
+                    <div class="text-left">
+                        <br />
+                        <br />
+                    </div>
+                     <p class="text-left"><span><strong><span style="font-size: 16px">55361151</span></strong></span><span style="font-size: 16px"></p>
+                    <p class="text-left"><span><strong>นายธีรวัฒน์ หินแก้ว</strong></span></p>
+                    <p class="text-left"><span><strong>Theerawat Hinkaew</strong></span></p>
+                    <p class="text-left"><span><strong><span style="font-size: 16px">theerawath55@email.nu.ac.th</span></strong></span></p>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4">
+                    <asp:Image ID="Image9" runat="server" Height="200px" ImageUrl="~/img/nontakorn.jpg" Width="200px" class="img-circle" />
+                </div>
+                <div class="col-lg-4" style="text-align: left">
+                    <div class="text-left">
+                        <br />
+                        <br />
+                    </div>
+                     <p class="text-left"><span><strong><span style="font-size: 16px">55361168</span></strong></span><span style="font-size: 16px"></p>
+                    <p class="text-left"><span><strong>นายนนทกรณ์ มางิ้ว</strong></span></p>
+                    <p class="text-left"><span><strong>Nontakorn Ma-ngiw</strong></span></p>
+                    <p class="text-left"><span><strong><span style="font-size: 16px">oppy963@gmail.com</span></strong></span></p>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4">
+                    <asp:Image ID="Image10" runat="server" Height="200px" ImageUrl="~/img/sakchai.jpg" Width="200px" class="img-circle" />
+                </div>
+                <div class="col-lg-4" style="text-align: left">
+                    <div class="text-left">
+                        <br />
+                        <br />
+                    </div>
+                     <p class="text-left"><span><strong><span style="font-size: 16px">55362417</span></strong></span><span style="font-size: 16px"></p>
+                    <p class="text-left"><span><strong>นายศักดิ์ชัย ศรีโสม</strong></span></p>
+                    <p class="text-left"><span><strong>Sakchai Srisom</strong></span></p>
+                    <p class="text-left"><span><strong><span style="font-size: 16px">Bodekvidva@gmail.com</span></strong></span></p>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4">
+                    <asp:Image ID="Image7" runat="server" Height="200px" ImageUrl="~/img/sahakorn.jpg" Width="200px" class="img-circle" />
+                </div>
+                <div class="col-lg-4" style="text-align: left">
+                    <div class="text-left">
+                        <br />
+                        <br />
+                    </div>
+                     <p class="text-left"><span><strong><span style="font-size: 16px">55362431</span></strong></span><span style="font-size: 16px"></p>
+                    <p class="text-left"><span><strong>นายสหกรณ์  บัวงาม</strong></span></p>
+                    <p class="text-left"><span><strong>Sahakorn Buangam</strong></span></p>
+                    <p class="text-left"><span><strong><span style="font-size: 16px">sahakornb55@email.nu.ac.th</span></strong></span></p>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+
+            <br />
+            <br />
             <p class="text-center">------------------------------------------------------------------------------------------------------------------------------------------------------</p>
             <p class="text-center">เว็บไซต์นี้เป็นส่วนหนึ่งของรายวิชา </p>
             <p class="text-center">305351 วิศวกรรมระบบคอมพิวเตอร์ Computer System Engineering </p>
