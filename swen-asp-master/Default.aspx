@@ -13,6 +13,13 @@
             background-color: #ff0000;
         }
 
+        #footer{
+            background-color: #ffffff;
+            bottom:0;
+            height:100px;
+            position:relative;
+            width:100%;
+        }
         /*.container-fluid .jumbotron {
             padding-left: 30px;
             padding-right: 30px;
@@ -74,7 +81,13 @@
         <%--<a class="btn btn-link" href="#">ดูรายละเอียดทั้งหมด >></a>--%>
 
     </div>
-
+    </br></br>
+            <div id="footer" class="navbar-default">
+                 <div class="container"><br>
+                     <h6><p class="text-center"> Copyright © 2015 Tuxedo พัฒนาเว็บไซต์ขึ้นในรายวิชา  305351 วิศวกรรมระบบคอมพิวเตอร์ Computer System Engineering </p></h6>
+                  <h6><p class="text-center"> Copyright © 2015 IRON พัฒนาเว็บไซต์ต่อในรายวิชา         305471 วิศวกรรมซอร์ฟแวร์ Software Engineering  </p></h6>
+                 </div>
+            </div>
     <%--///////////////////////////////////////////// STOP //////////////////////////////////////////////////////--%>
 
 </asp:Content>

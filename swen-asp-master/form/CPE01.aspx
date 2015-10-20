@@ -25,6 +25,14 @@
             margin-bottom: 2px;
             font-weight: bold;
         }
+
+        #footer{
+            background-color: #ffffff;
+            bottom:0;
+            height:100px;
+            position:relative;
+            width:100%;
+        }
     </style>
 
     <style>
@@ -221,6 +229,7 @@
                             <asp:DropDownList ID="DropDownList1" runat="server" CssClass="form-control" AutoPostBack="True">
                                 <asp:ListItem Selected="True">โปรดเลือก</asp:ListItem>
                             </asp:DropDownList>
+                            
                         </div>
                         <div class="col-lg-4">
                             <label>อาจารย์ที่ปรึกษาร่วม (ถ้ามี) </label>
@@ -252,11 +261,19 @@
                         <asp:Button ID="btn_sentForm" runat="server" class="btn btn-primary" Text="บันทึกและส่งแบบฟอร์ม" OnClick="btn_sentForm_Click" OnClientClick="ConfirmSent()" />
                         <asp:Button ID="btn_cancelForm" runat="server" class="btn btn-danger" Text="ออกจากโครงงาน" OnClick="exitProject" OnClientClick="Confirm()" />
                         <asp:Button ID="btn_cancelSentForm" runat="server" class="btn btn-danger" Text="ยกเลิการส่งโครงงาน" OnClick="btn_cancelSentForm_Click"/>
+                        <asp:Button ID="btn_pdf" runat="server" class="btn btn-primary" Text="พิมพ์" OnClick="btn_pdf_Click" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+              <div id="footer" class="navbar-default">
+                 <div class="container"><br>
+                     <h6><p class="text-center"> Copyright © 2015 Tuxedo พัฒนาเว็บไซต์ขึ้นในรายวิชา  305351 วิศวกรรมระบบคอมพิวเตอร์ Computer System Engineering </p></h6>
+                  <h6><p class="text-center"> Copyright © 2015 IRON พัฒนาเว็บไซต์ต่อในรายวิชา         305471 วิศวกรรมซอฟต์แวร์ Software Engineering  </p></h6>
+                 </div>
+              </div>
     <script type="text/javascript">
         function Confirm() {
             var confirm_value = document.createElement("INPUT");

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +11,7 @@ using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+
 
 static public class memberControl
 {
@@ -40,6 +43,8 @@ public partial class Default2 : System.Web.UI.Page
     string[] PersID = new string[3]; // ไม่แน่ใจว่า3 จะพังไหม
     string[] PersIDTemp = new string[2];
     int teacher = 0;
+    static string teacer_name;
+    static int index_teacher;
     protected void DropdownListadviser(SqlConnection conn)
     {
         if (!IsPostBack)
@@ -299,6 +304,7 @@ public partial class Default2 : System.Web.UI.Page
                 check = string.Compare(Adviser, memberControl.adviser[i].ToString());
                 if (check == 0) // แสดงว่าเจอ
                     DropDownList1.SelectedIndex = i + 1;
+                index_teacher = i + 1;
             }
         }
         if (HaveAdvser(ProjID, conn, 2))
@@ -309,6 +315,7 @@ public partial class Default2 : System.Web.UI.Page
                 check = string.Compare(Adviser, memberControl.adviser[i].ToString());
                 if (check == 0) // แสดงว่าเจอ
                     DropDownList2.SelectedIndex = i + 1;
+                index_teacher = i + 1;
             }
         }
 
@@ -320,6 +327,7 @@ public partial class Default2 : System.Web.UI.Page
                 check = string.Compare(Adviser, memberControl.adviser[i].ToString());
                 if (check == 0) // แสดงว่าเจอ
                     DropDownList3.SelectedIndex = i + 1;
+                index_teacher = i + 1;
             }
         }
     }
@@ -936,7 +944,7 @@ public partial class Default2 : System.Web.UI.Page
     }
     protected int findStatusProj(string ProjID, SqlConnection conn)
     {
-        string findStatus = "select Status_ID from project where ProjID = '" + ProjID + "'";
+        string findStatus = "select count(*) from project where ProjID = '" + ProjID + "' AND State = 2 ";
         conn.Open();
         SqlCommand findStatusComm = new SqlCommand(findStatus, conn);
         SqlDataReader myStatus = findStatusComm.ExecuteReader();
@@ -978,6 +986,8 @@ public partial class Default2 : System.Web.UI.Page
         if (Session["ID"] != null)
         {
             DropdownListadviser(conn);
+
+            btn_pdf.Visible = false;
             string id = Session["ID"].ToString();
             if (youAreStudent(id, conn)) // นิสิต
             {
@@ -1013,13 +1023,15 @@ public partial class Default2 : System.Web.UI.Page
                     btn_sentForm.CssClass = "btn btn-success";
                     checkDropdownList();
                     btn_cancelSentForm.Visible = false;
+                    
 
-                    if (findStatusProj(ProjID, conn) == 1)
+                    if (findStatusProj(ProjID, conn) == 0)// CPE 01 ยังไม่ approve
                     {
                         btn_saveForm.Visible = true;
                         btn_sentForm.Visible = true;
                         btn_sentForm.Enabled = true;
                         btn_cancelForm.Visible = true;
+                        btn_pdf.Visible = false;
                         divAddMember.Style.Add("display", "none");
                         /*
                         DropDownList1.Enabled = false;
@@ -1029,8 +1041,11 @@ public partial class Default2 : System.Web.UI.Page
                         text_en.Enabled = false;
                         btn_cancelSentForm.Visible = true;*/
                     }
-                    else if (findStatusProj(ProjID, conn) == 2)//ผ่านแล้ว
+                    else if (findStatusProj(ProjID, conn) == 1)//ผ่านแล้ว
                     {
+                        DropDownList1.SelectedIndex = test(ProjID, id, conn);
+                        index_teacher = DropDownList1.SelectedIndex;
+
                         btn_saveForm.Visible = false;
                         btn_sentForm.Visible = false;
                         btn_cancelForm.Visible = false;
@@ -1041,12 +1056,15 @@ public partial class Default2 : System.Web.UI.Page
                         text_th.Enabled = false;
                         text_en.Enabled = false;
                         btn_cancelSentForm.Visible = false;
-
+                        btn_pdf.Visible = true;
+                        //name_teach.Text = DropDownList1.SelectedValue.ToString();
                         //****
                         //DropDownList1.SelectedIndex = 1;
                         //MessageBox.Show(test(ProjID, id, conn).ToString());
                         //****
-                        DropDownList1.SelectedIndex = test(ProjID, id, conn);
+                        
+                        //MessageBox.Show(index_teacher.ToString());
+                        
                     }
                     else
                     {
@@ -1103,5 +1121,240 @@ public partial class Default2 : System.Web.UI.Page
         }
     }
 
+    public string selectDate(string id, SqlConnection conn)
+    {
+        string sqlDate = "select Date from project where ProjID = '" + id +"'";
+        conn.Open();
+        SqlCommand qrDate = new SqlCommand(sqlDate, conn);
+        SqlDataReader myStatus = qrDate.ExecuteReader();
+        myStatus.Read();
+        string date = myStatus["Date"].ToString();
+        conn.Close();
+        return date;
+    }
+    public string get_name_th(string id, SqlConnection conn)
+    {
+        string sqlDate = "select ProjName_TH from project where ProjID = '" + id + "'";
+        conn.Open();
+        SqlCommand qrDate = new SqlCommand(sqlDate, conn);
+        SqlDataReader myStatus = qrDate.ExecuteReader();
+        myStatus.Read();
+        string name = myStatus["ProjName_TH"].ToString();
+        conn.Close();
+        return name;
+    }
+    public string get_name_en(string id, SqlConnection conn)
+    {
+        string sqlDate = "select ProjName_ENG from project where ProjID = '" + id + "'";
+        conn.Open();
+        SqlCommand qrDate = new SqlCommand(sqlDate, conn);
+        SqlDataReader myStatus = qrDate.ExecuteReader();
+        myStatus.Read();
+        string name = myStatus["ProjName_ENG"].ToString();
+        conn.Close();
+        return name;
+    }
+    public string teacher_id(string pro_id,SqlConnection conn,int type)
+    {
+        string findStatus = "select PersID from Relation where ProjID = '" + pro_id + "' AND Status_ID = '"+type+"'";
+        conn.Open();
+        SqlCommand findStatusComm = new SqlCommand(findStatus, conn);
+        SqlDataReader myStatus = findStatusComm.ExecuteReader();
+        myStatus.Read();
+        string t = myStatus["PersID"].ToString();
+        conn.Close();
+        
+        return t;
+    }
+  
+    public string name_teacher(string teacher_id, SqlConnection conn)
+    {
+        string findStatus = "select Title,Fname,Lname from person where PersID = '" + teacher_id + "'";
+        conn.Open();
+        SqlCommand findStatusComm = new SqlCommand(findStatus, conn);
+        SqlDataReader myStatus = findStatusComm.ExecuteReader();
 
+        string name1 = "";
+        if (myStatus.Read())
+        {
+            name1 = myStatus["Title"].ToString()+ " "+myStatus["Fname"].ToString() + " "+myStatus["Lname"].ToString();
+           
+        }
+
+        conn.Close();
+       
+        return name1;
+    }
+    public string getPhone(string id, SqlConnection conn)
+    {
+        string findStatus = "select Phone from person where PersID = '" + id + "'";
+        conn.Open();
+        SqlCommand findStatusComm = new SqlCommand(findStatus, conn);
+        SqlDataReader myStatus = findStatusComm.ExecuteReader();
+
+        string name1 = "";
+        if (myStatus.Read())
+        {
+            name1 = myStatus["Phone"].ToString();
+
+        }
+
+        conn.Close();
+
+        return name1;
+    }
+    public string getEmail(string id, SqlConnection conn)
+    {
+        string findStatus = "select Email from person where PersID = '" + id + "'";
+        conn.Open();
+        SqlCommand findStatusComm = new SqlCommand(findStatus, conn);
+        SqlDataReader myStatus = findStatusComm.ExecuteReader();
+
+        string name1 = "";
+        if (myStatus.Read())
+        {
+            name1 = myStatus["Email"].ToString();
+
+        }
+
+        conn.Close();
+
+        return name1;
+    }
+    
+    void pdf()
+    {
+        string id = Session["ID"].ToString();
+        SqlConnection conn = new SqlConnection(constr);
+        string ProjID = GetProjID(id, conn);
+      
+       string t_id = teacher_id(ProjID, conn,4);
+       string c_id = teacher_id(ProjID, conn, 7);
+       string st_id = teacher_id(ProjID, conn, 0);
+       teacer_name = name_teacher(t_id, conn);
+       string c_name = name_teacher(c_id,conn);
+       string st_name = name_teacher(st_id, conn);
+       string t_name2 = "-";
+       string st_phone = getPhone(st_id, conn);
+       string st_email = getEmail(st_id, conn);
+       string name_th = get_name_th(ProjID, conn);
+       string name_en = get_name_en(ProjID, conn);
+       //MessageBox.Show(t_id);
+       string date = selectDate(ProjID, conn);
+
+        try
+        {
+            BaseFont EnCodefont = BaseFont.CreateFont("E:/Font/THSarabunNew.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font Nfont12 = new Font(EnCodefont, 12, Font.NORMAL);
+            Font Nfont16 = new Font(EnCodefont, 16, Font.NORMAL);
+          
+            Document pdfDoc = new Document(PageSize.A4, 25, 10, 25, 10);
+            PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            pdfDoc.Open();
+
+            PdfPTable table = new PdfPTable(2);
+            PdfPCell cell = new PdfPCell();
+            cell.Colspan = 2;
+            cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+            float[] widths = new float[] { 1f, 9f };
+            table.SetWidths(widths);
+            table.AddCell(cell);
+            table.AddCell(new Paragraph("CPE01", Nfont16));
+            table.AddCell(new Paragraph("แบบเสนอหัวข้อโครงงานวิศวกรรมคอมพิวเตอร์ ปีการศึกษาที่ 2558", Nfont16));
+
+            pdfDoc.Add(table);
+
+            pdfDoc.Add(new Paragraph("                     ชื่อโครงงาน\n\n", Nfont12));
+
+            table = new PdfPTable(2);
+            cell = new PdfPCell();
+            cell.Colspan = 2;
+            // table2
+            cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+            table.AddCell(cell);
+            table.AddCell(new Paragraph("ภาษาไทย", Nfont12));
+            table.AddCell(new Paragraph("ภาษาอังกฤษ", Nfont12));
+
+            table.AddCell(new Paragraph(name_th+"\n\n\n\n", Nfont12));
+            table.AddCell(new Paragraph(name_en+"\n\n\n\n", Nfont12));
+            pdfDoc.Add(table);
+
+            pdfDoc.Add(new Paragraph("                     รายชื่อนิสิตผู้ทำโครงงาน\n\n", Nfont12));
+            // table3
+            table = new PdfPTable(5);
+            cell = new PdfPCell();
+            cell.Colspan = 5;
+            cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+            table.AddCell(cell);
+            widths = new float[] { 1f, 6f, 3f, 3f, 6f };
+            table.SetWidths(widths);
+            table.AddCell(new Paragraph("ที่", Nfont12));
+            table.AddCell(new Paragraph("ชื่อ-นามสกุล", Nfont12));
+            table.AddCell(new Paragraph("รหัสนิสิต", Nfont12));
+            table.AddCell(new Paragraph("เบอร์โทร", Nfont12));
+            table.AddCell(new Paragraph("อีเมล์", Nfont12));
+
+            table.AddCell(new Paragraph("1", Nfont12));
+            table.AddCell(new Paragraph(st_name+"\n\n", Nfont12));
+            table.AddCell(new Paragraph(st_id+"\n\n", Nfont12));
+            table.AddCell(new Paragraph(st_phone+"\n\n", Nfont12));
+            table.AddCell(new Paragraph(st_email+"\n\n", Nfont12));
+
+            table.AddCell(new Paragraph("2", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+
+            table.AddCell(new Paragraph("3", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+            table.AddCell(new Paragraph("\n\n", Nfont12));
+            pdfDoc.Add(table);
+
+            pdfDoc.Add(new Paragraph("                     อาจารย์ที่ปรึกษาและกรรมการ\n\n", Nfont12));
+
+            table = new PdfPTable(3);
+            cell = new PdfPCell();
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+            table.AddCell(cell);
+            table.AddCell(new Paragraph("อาจารย์ที่ปรึกษา", Nfont12));
+            table.AddCell(new Paragraph("อาจารย์ที่ปรึกษาร่วม (ถ้ามี)", Nfont12));
+            table.AddCell(new Paragraph("เสนอรายชื่อกรรมการ 1 ท่าน", Nfont12));
+            table.AddCell(new Paragraph(teacer_name + "\n\n\n", Nfont12));
+            table.AddCell(new Paragraph(t_name2+"\n\n\n", Nfont12));
+            table.AddCell(new Paragraph(c_name+"\n\n\n", Nfont12));
+            pdfDoc.Add(table);
+
+            pdfDoc.Add(new Paragraph("\n\n", Nfont12));
+            pdfDoc.Add(new Paragraph("                                                                                                                           ลงชื่อ ..................................................................", Nfont12));
+            pdfDoc.Add(new Paragraph("                                                                                                                                  (            " + teacer_name + "           )", Nfont12));
+            pdfDoc.Add(new Paragraph("                                                                                                                                         อาจารย์ที่ปรึกษาโครงาน", Nfont12));
+            pdfDoc.Add(new Paragraph("                                                                                                                           วันที่ ................." + date + "...............", Nfont12));
+
+            pdfWriter.CloseStream = false;
+            pdfDoc.Close();
+            Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=CPE01.pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+           
+                Response.Write(pdfDoc);
+                Response.End();
+            
+
+        }
+        catch (Exception ex)
+        { Response.Write(ex.Message); }
+
+
+    }
+    protected void btn_pdf_Click(object sender, EventArgs e)
+    {
+        pdf();
+       
+    }
 }

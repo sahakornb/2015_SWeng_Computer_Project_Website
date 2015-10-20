@@ -2,11 +2,30 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <!-- <h2><%: Title %>.</h2> -->
+        <style>
 
+        .navbar-bottom {
+            height:100px;
+            background-color: #ffffff;
+            margin-bottom:0px;
+            padding-bottom:0px;
+        }
+        #footer{
+            background-color: #ffffff;
+            bottom:0;
+            height:100px;
+            position:relative;
+            width:100%;
+        }
+
+    </style>
     <div class="container">
         <div class="row clearfix" style="text-align: left">
-       <h5 class="text-center">เกี่ยวกับ</h5>
 
+            <h5> <p class="text-center">พัฒนาเว็บไซต์โดยทีม Tuxedo </p></h5>
+            <h6><p class="text-center">เว็บไซต์นี้เป็นส่วนหนึ่งของรายวิชา </p></h6>
+            <h6><p class="text-center">305351 วิศวกรรมระบบคอมพิวเตอร์ Computer System Engineering </p></h6>
+            <p class="text-center">------------------------------------------------------------------------------------------------------------------------------------------------------</p>
             <div class="row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-4">
@@ -52,7 +71,6 @@
 
             <div class="text-left">
 
-
                 <br />
                 <br />
             </div>
@@ -94,7 +112,6 @@
                 <div class="col-lg-2"></div>
             </div>
 
-
             <br />
             <br />
             <div class="row">
@@ -112,12 +129,18 @@
                     <p class="text-left"><span><strong>Ratchawut Keunmamuang</strong></span></p>
                     <p class="text-left"><span><strong><span style="font-size: 16px">ratchawutk55@email.nu.ac.th</span></strong></span></p>
                 </div>
+
                 <div class="col-lg-2"></div>
             </div>
 
             <br />
             <br />
-             <h5 class="text-center">ทีมพัฒนาเว็บไซต์ต่อ</h5>
+             
+            <p class="text-center">------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+            <h5 class="text-center">พัฒนาเว็บไซต์ต่อโดยทีม IRON </h5>
+            <h6><p class="text-center">เว็บไซต์นี้เป็นส่วนหนึ่งของรายวิชา </p></h6>
+            <h6><p class="text-center">305471 วิศวกรรมซอฟต์แวร์ Software Engineering </p></h6>
+            <p class="text-center">------------------------------------------------------------------------------------------------------------------------------------------------------</p>
             <div class="row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-4">
@@ -219,11 +242,12 @@
 
             <br />
             <br />
-            <p class="text-center">------------------------------------------------------------------------------------------------------------------------------------------------------</p>
-            <p class="text-center">เว็บไซต์นี้เป็นส่วนหนึ่งของรายวิชา </p>
-            <p class="text-center">305351 วิศวกรรมระบบคอมพิวเตอร์ Computer System Engineering </p>
         </div>
     </div>
-
-
+              <div id="footer" class="navbar-default">
+                 <div class="container"><br>
+                     <h6><p class="text-center"> Copyright © 2015 Tuxedo พัฒนาเว็บไซต์ขึ้นในรายวิชา  305351 วิศวกรรมระบบคอมพิวเตอร์ Computer System Engineering </p></h6>
+                  <h6><p class="text-center"> Copyright © 2015 IRON พัฒนาเว็บไซต์ต่อในรายวิชา         305471 วิศวกรรมซอฟต์แวร์ Software Engineering  </p></h6>
+                 </div>
+              </div>
 </asp:Content>

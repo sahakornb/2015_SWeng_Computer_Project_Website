@@ -110,9 +110,24 @@
                 .buttonHolder {
                     text-align: center;
                 }
+
+                #footer{
+                    background-color: #ffffff;
+                    bottom:0;
+                    height:100px;
+                    position:relative;
+                    width:100%;
+                }
             </style>
         </div>
     </div>
+    </br></br>
+              <div id="footer" class="navbar-default">
+                 <div class="container"><br>
+                     <h6><p class="text-center"> Copyright © 2015 Tuxedo พัฒนาเว็บไซต์ขึ้นในรายวิชา  305351 วิศวกรรมระบบคอมพิวเตอร์ Computer System Engineering </p></h6>
+                  <h6><p class="text-center"> Copyright © 2015 IRON พัฒนาเว็บไซต์ต่อในรายวิชา         305471 วิศวกรรมซอฟต์แวร์ Software Engineering  </p></h6>
+                 </div>
+              </div>
 </asp:Content>
 
 

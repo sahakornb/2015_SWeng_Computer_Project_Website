@@ -8,6 +8,7 @@ using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using System.Net.Mail;
 public partial class Default2 : System.Web.UI.Page
 {
     //Default of form
@@ -215,6 +216,59 @@ public partial class Default2 : System.Web.UI.Page
         comDel.ExecuteNonQuery();
         conn.Close();
     }
+
+    public string getEmail(string id, SqlConnection conn)
+    {
+        string findStatus = "select Email from person where PersID = '" + id + "'";
+        conn.Open();
+        SqlCommand findStatusComm = new SqlCommand(findStatus, conn);
+        SqlDataReader myStatus = findStatusComm.ExecuteReader();
+
+        string name1 = "";
+        if (myStatus.Read())
+        {
+            name1 = myStatus["Email"].ToString();
+
+        }
+
+        conn.Close();
+
+        return name1;
+    }
+    public void sendEmail()
+    {
+        string constr = WebConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        string pid_ = Session["ID"].ToString();
+        SqlConnection conn = new SqlConnection(constr);
+        string projID = GetProjID(pid_, conn);
+        string email = getEmail(projID, conn);
+        SmtpClient client = new SmtpClient("smtp-mail.outlook.com");
+       
+        client.Port = 587;
+        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        client.UseDefaultCredentials = false;
+        System.Net.NetworkCredential credentials =
+            new System.Net.NetworkCredential("sahakorn.new@outlook.com", "sahakorn1993");
+        client.EnableSsl = true;
+        client.Credentials = credentials;
+
+        try
+        {
+            var mail = new MailMessage("sahakorn.new@outlook.com", email);//(_sender.Trim(), recipient.Trim());
+            mail.Subject = "Confirm CPE-01";
+            mail.Body = "Your CPE 01 Approved.!\n\n";
+            mail.Body += "Please Check your CPE01 now.\n\n";
+            mail.Body += "Computer Engineering , Naresuan University\n\n";
+            client.Send(mail);
+            Response.Write("E-mail sent!");
+        }
+        catch (Exception ex)
+        {
+            //    Console.WriteLine(ex.Message);
+            Response.Write("Could not send the e-mail - error: " + ex.Message);
+            throw ex;
+        }
+    }
     protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
         string constr = WebConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
@@ -234,6 +288,7 @@ public partial class Default2 : System.Web.UI.Page
                     updateStatusOfProject(ProjID, "0","2", conn);//2 is ผ่าน 
                     updateStatusOfPerson(ProjID, PersID, "1", "4", conn); // 4 ยอมรับเป็นที่ปรึกษาแล้ว
                     deleteReq(ProjID, conn);
+                    sendEmail();
                 }
                 else
                 {
