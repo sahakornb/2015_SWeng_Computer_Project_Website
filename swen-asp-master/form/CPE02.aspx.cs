@@ -12,7 +12,7 @@ public partial class Default2 : System.Web.UI.Page
 
     protected bool ApprovedCPE01(string ProjID, SqlConnection conn)
     {
-        string Checkuser = "select count(*) from project where ProjID ='" + ProjID + "'AND Status_ID = '" + "2" + "'";
+        string Checkuser = "select count(*) from project where ProjID ='" + ProjID + "'AND State = 2";
         conn.Open();
         SqlCommand com = new SqlCommand(Checkuser, conn);
         int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
