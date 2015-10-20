@@ -249,7 +249,7 @@
                         <asp:Button ID="btn_saveForm" runat="server" class="btn btn-primary" Text="บันทึก" OnClick="btn_saveForm_Click" />
                         <%--                     <asp:Button ID="btn_sentForm" runat="server" class="btn btn-primary disabled" Text="ส่งแบบฟอร์ม" />--%>
                         <%--                     <asp:Button ID="Button3" runat="server" Text="Button" />--%>
-                        <asp:Button ID="btn_sentForm" runat="server" class="btn btn-primary disabled" Text="บันทึกและส่งแบบฟอร์ม" OnClick="btn_sentForm_Click" OnClientClick="ConfirmSent()" />
+                        <asp:Button ID="btn_sentForm" runat="server" class="btn btn-primary" Text="บันทึกและส่งแบบฟอร์ม" OnClick="btn_sentForm_Click" OnClientClick="ConfirmSent()" />
                         <asp:Button ID="btn_cancelForm" runat="server" class="btn btn-danger" Text="ออกจากโครงงาน" OnClick="exitProject" OnClientClick="Confirm()" />
                         <asp:Button ID="btn_cancelSentForm" runat="server" class="btn btn-danger" Text="ยกเลิการส่งโครงงาน" OnClick="btn_cancelSentForm_Click"/>
                     </div>

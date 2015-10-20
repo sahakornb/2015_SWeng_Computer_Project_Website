@@ -562,10 +562,16 @@ public partial class Default2 : System.Web.UI.Page
         DateTime time = DateTime.Now;
         string time_forsave = String.Format("{0:dd-MM-yyyy HH:mm:ss}", time);
         conn.Open();
-        string sql = "INSERT INTO project (ProjName_TH,ProjName_ENG,Member,Date,Status_ID) OUTPUT INSERTED.ProjiD VALUES ('" + text_th.Text + "','" + text_en.Text + "','" + memberControl.member + "','" + time_forsave + "','" + "0" + "')";
+        string sql = "INSERT INTO project (ProjName_TH,ProjName_ENG,Member,Date,Status_ID) OUTPUT INSERTED.ProjiD VALUES ('" + text_th.Text + "','" + text_en.Text + "','" + memberControl.member + "','" + time_forsave + "','" + "1"   + "')";
         SqlCommand com = new SqlCommand(sql, conn);
         var projectIDCS = com.ExecuteScalar();
         string ProjID = projectIDCS.ToString();
+
+
+        string sqlUpdateStatus = "UPDATE project SET State='1' WHERE ProjID= '" + ProjID + "'";
+        SqlCommand qrUpdateStatus = new SqlCommand(sqlUpdateStatus, conn);
+        qrUpdateStatus.ExecuteScalar();
+
         conn.Close();
         return ProjID;
     }
@@ -837,7 +843,7 @@ public partial class Default2 : System.Web.UI.Page
     protected void updateStatusOfProject(string ProjID, string status, SqlConnection conn)
     {
         conn.Open();
-        string updateProjStatus = "UPDATE project SET Status_ID = '" + status + "' " + " WHERE ProjID = '" + ProjID + "'";
+        string updateProjStatus = "UPDATE project SET Status_ID = '" + status + "', State = 1 " + " WHERE ProjID = '" + ProjID + "'";
         SqlCommand comUpdate = new SqlCommand(updateProjStatus, conn);
         comUpdate.ExecuteScalar();
         conn.Close();
@@ -878,9 +884,11 @@ public partial class Default2 : System.Web.UI.Page
             if (confirmValue == "ใช่")
             {
                 updateTeacher(GetProjID(id, conn), conn);
-                updateStatusOfProject(ProjID, "1", conn);
+                updateStatusOfProject(ProjID, "2", conn);
                 WhoAreAdviser(ProjID, conn, 1);
                 request(ProjID, id, WhoAreAdviser(ProjID, conn, 1), "1", conn);
+
+
                 //MessageBox.Show(WhoAreAdviser(ProjID, conn, 1));
             }
             else
@@ -1000,22 +1008,26 @@ public partial class Default2 : System.Web.UI.Page
                         btn_cancelForm.Text = "ลบโครงงาน";
                     else
                         btn_cancelForm.Text = "ออกจากโครงงาน";
+
                     btn_cancelForm.Visible = true;
                     btn_sentForm.CssClass = "btn btn-success";
                     checkDropdownList();
                     btn_cancelSentForm.Visible = false;
+
                     if (findStatusProj(ProjID, conn) == 1)
                     {
-                        btn_saveForm.Visible = false;
-                        btn_sentForm.Visible = false;
-                        btn_cancelForm.Visible = false;
+                        btn_saveForm.Visible = true;
+                        btn_sentForm.Visible = true;
+                        btn_sentForm.Enabled = true;
+                        btn_cancelForm.Visible = true;
                         divAddMember.Style.Add("display", "none");
+                        /*
                         DropDownList1.Enabled = false;
                         DropDownList2.Enabled = false;
                         DropDownList3.Enabled = false;
                         text_th.Enabled = false;
                         text_en.Enabled = false;
-                        btn_cancelSentForm.Visible = true;
+                        btn_cancelSentForm.Visible = true;*/
                     }
                     else if (findStatusProj(ProjID, conn) == 2)//ผ่านแล้ว
                     {
@@ -1044,6 +1056,7 @@ public partial class Default2 : System.Web.UI.Page
                 else
                 {
                     //MessageBox.Show("ยังไม่มีโครงงาน");
+
                     btn_cancelForm.Visible = false;
                     CreatProject(id, conn);
                     if (!IsPostBack)
@@ -1059,6 +1072,7 @@ public partial class Default2 : System.Web.UI.Page
                 //Response.Redirect("~/Account/Form");
                 btn_saveForm.Visible = false;
                 btn_sentForm.Visible = false;
+
                 btn_cancelForm.Visible = false;
                 divAddMember.Style.Add("display", "none");
                 DropDownList1.Enabled = false;

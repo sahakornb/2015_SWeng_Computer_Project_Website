@@ -16,34 +16,27 @@
                     <a class="list-group-item active">
                         <h5>เลือกแบบฟอร์ม</h5>
                     </a>
-                    <a href="./CPE01" class="list-group-item">
-                        <h6 style="display:inline">CPE01-แบบเสนอหัวข้อโครงงาน</h6>
-                        <asp:Image ID="Image1" runat="server" ImageUrl="~/img/correct.png" />
-                    </a>
-                    <a href="./CPE02" class="list-group-item">
-                        <h6 style="display:inline">CPE02-แบบบันทึกการดำเนินงานโครงงาน</h6>
-                        <asp:Image ID="Image2" runat="server" ImageUrl="~/img/correct.png" style="display:inline" /> 
-                    </a>
-                    <a href="./CPE03" class="list-group-item">
+                    <asp:HyperLink ID="cpe01" class="list-group-item" runat="server" href="./CPE01" > 
+                        <h6 style="display:inline;">CPE01-แบบเสนอหัวข้อโครงงาน</h6>   
+                    </asp:HyperLink> 
+                    <asp:HyperLink ID="cpe02" class="list-group-item" runat="server" href="./CPE02">
+                        <h6 style="display:inline">CPE02-แบบบันทึกการดำเนินงานโครงงาน</h6>   
+                    </asp:HyperLink>
+                    <asp:HyperLink ID="cpe03" class="list-group-item" runat="server" href="./CPE03">
                         <h6 style="display:inline">CPE03-แบบขอสอบข้อเสนอโครงงาน</h6>
-                        <asp:Image ID="Image3" runat="server" ImageUrl="~/img/correct.png" />
-                    </a>
-                    <a href="./CPE04" class="list-group-item">
+                    </asp:HyperLink>
+                    <asp:HyperLink ID="cpe04" class="list-group-item" runat="server" href="./CPE04">
                         <h6 style="display:inline">CPE04-แบบประเมินข้อเสนอโครงงาน</h6>
-                        <asp:Image ID="Image4" runat="server" ImageUrl="~/img/correct.png" />
-                    </a>
-                    <a href="./CPE05" class="list-group-item">
-                        <h6 style="display:inline">CPE05-แบบประเมินความก้าวหน้าโครงงาน</h6>
-                        <asp:Image ID="Image5" runat="server" ImageUrl="~/img/correct.png" />
-                    </a>
-                    <a href="./CPE06" class="list-group-item">
-                        <h6 style="display:inline">CPE06-แบบขอสอบโครงงาน</h6>
-                        <asp:Image ID="Image6" runat="server" ImageUrl="~/img/correct.png" />
-                    </a>
-                    <a href="./CPE07" class="list-group-item">
-                        <h6 style="display:inline">CPE07-แบบประเมินโครงงาน</h6>
-                        <asp:Image ID="Image7" runat="server" ImageUrl="~/img/correct.png" />
-                    </a>
+                    </asp:HyperLink>   
+                    <asp:HyperLink ID="cpe05" class="list-group-item" runat="server" href="./CPE05">
+                        <h6 style="display:inline">CPE05-แบบประเมินความก้าวหน้าโครงงาน</h6>   
+                    </asp:HyperLink>  
+                    <asp:HyperLink ID="cpe06" class="list-group-item" runat="server" href="./CPE06">
+                        <h6 style="display:inline">CPE06-แบบขอสอบโครงงาน</h6>                        
+                    </asp:HyperLink>  
+                    <asp:HyperLink ID="cpe07" class="list-group-item" runat="server" href="./CPE07">
+                        <h6 style="display:inline">CPE07-แบบประเมินโครงงาน</h6>                        
+                    </asp:HyperLink>  
                 </div>
             </div>
         </div>

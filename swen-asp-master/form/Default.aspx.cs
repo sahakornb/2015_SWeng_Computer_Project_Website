@@ -81,15 +81,6 @@ public partial class Default2 : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Image1.Visible = false;
-        Image2.Visible = false;
-        Image3.Visible = false;
-        Image4.Visible = false;
-        Image5.Visible = false;
-        Image6.Visible = false;
-        Image7.Visible = false;
-
-
 
         string constr = WebConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(constr);
@@ -145,10 +136,10 @@ public partial class Default2 : System.Web.UI.Page
         comDel.ExecuteNonQuery();
         conn.Close();
     }
-    protected void updateStatusOfProject(string ProjID, string status, SqlConnection conn)
+    protected void updateStatusOfProject(string ProjID, string status , string state, SqlConnection conn)
     {
         conn.Open();
-        string updateProjStatus = "UPDATE project SET Status_ID = '" + status + "' " + " WHERE ProjID = '" + ProjID + "'";
+        string updateProjStatus = "UPDATE project SET Status_ID = '" + status + "', State = '" + state + "' WHERE ProjID = '" + ProjID + "'";
         SqlCommand comUpdate = new SqlCommand(updateProjStatus, conn);
         comUpdate.ExecuteScalar();
         conn.Close();
@@ -240,7 +231,7 @@ public partial class Default2 : System.Web.UI.Page
 
                 if (type == 1)
                 {
-                    updateStatusOfProject(ProjID, "2", conn);//2 is ผ่าน 
+                    updateStatusOfProject(ProjID, "0","2", conn);//2 is ผ่าน 
                     updateStatusOfPerson(ProjID, PersID, "1", "4", conn); // 4 ยอมรับเป็นที่ปรึกษาแล้ว
                     deleteReq(ProjID, conn);
                 }
@@ -271,7 +262,7 @@ public partial class Default2 : System.Web.UI.Page
                 string ProjID = __ProjID.Text;
                 if (type == 1)
                 {
-                    updateStatusOfProject(ProjID, "0", conn);//0 is ไม่ผ่าน 
+                    updateStatusOfProject(ProjID, "0", "1", conn);//0 is ไม่ผ่าน 
                     deleteReq(ProjID, conn);
                 }
                 else
@@ -328,36 +319,67 @@ public partial class Default2 : System.Web.UI.Page
     public void chkApprove(string ProjID, SqlConnection conn)
     {
 
-        string Checkuser = "select max(Status_ID) as value from project where ProjID ='" + ProjID + "'";
+        string Checkuser = "select Status_ID,State from project where ProjID ='" + ProjID + "'";
         conn.Open();
         SqlCommand com = new SqlCommand(Checkuser, conn);
-        //int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
-        int temp = 0;
+
+        int tempStatus = 0, tempState = 0 ;
         
         SqlDataReader reader = com.ExecuteReader();
 
         if (reader.Read())
         {
-            temp = Convert.ToInt32( reader["value"].ToString());
+            tempStatus = Convert.ToInt32(reader["Status_ID"].ToString());
+            tempState = Convert.ToInt32(reader["State"].ToString());
         }
 
         conn.Close();
 
-
-        if (temp >= 5)
+        //----------------เปลี่ยนสี fill ตาม State Progress ------------------- 
+        if (tempState == 1 && tempStatus == 1 )
         {
-            Image1.Visible = true;
-            Image2.Visible = true;
-            Image3.Visible = true;
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#EEEEEE"); //เทา
         }
-        else if (temp >= 4)
+        else if (tempState == 1 && tempStatus == 2)
         {
-            Image1.Visible = true;
-            Image2.Visible = true;
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#F4FF81"); //เหลือง
         }
-        else if (temp >= 2)
+        else if (tempState == 2 && tempStatus == 0)
         {
-            Image1.Visible = true;
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+        }
+        else if (tempState == 2 && tempStatus == 1)
+        {
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe02.BackColor = System.Drawing.ColorTranslator.FromHtml("#EEEEEE"); //เทา
+        }
+        else if (tempState == 2 && tempStatus == 2)
+        {
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe02.BackColor = System.Drawing.ColorTranslator.FromHtml("#F4FF81"); //เหลือง
+        }
+        else if (tempState == 3 && tempStatus == 0)
+        {
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe02.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+        }
+        else if (tempState == 3 && tempStatus == 1)
+        {
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe02.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe03.BackColor = System.Drawing.ColorTranslator.FromHtml("#EEEEEE"); //เทา
+        }
+        else if (tempState == 3 && tempStatus == 2)
+        {
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe02.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe03.BackColor = System.Drawing.ColorTranslator.FromHtml("#F4FF81"); //เหลือง
+        }
+        else if (tempState == 4 && tempStatus == 0)
+        {
+            cpe01.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe02.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
+            cpe03.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFF90"); //เขียว
         }
 
         
